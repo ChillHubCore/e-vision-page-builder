@@ -2,6 +2,7 @@ import { toast } from "@/components/ui/use-toast";
 import { UserInfo, UserState } from "@/lib/types/global";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie, hasCookie, setCookie } from "cookies-next";
+// import { cookies } from "next/headers";
 
 const initialState = {
   userInfo: hasCookie("userInfo")
@@ -20,6 +21,7 @@ export const userSlice = createSlice({
         sameSite: true,
         secure: true,
       });
+      // cookies().set("userInfo", JSON.stringify(newState.userInfo));
       toast({
         title: "Welocme!",
         description: "You are now logged in.",
@@ -29,6 +31,7 @@ export const userSlice = createSlice({
       const newState = state;
       newState.userInfo = null;
       deleteCookie("userInfo");
+      // cookies().delete("userInfo");
       toast({
         title: "Goodbye!",
         description: "You Have Logged Out Successfully.",
