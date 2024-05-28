@@ -11,5 +11,5 @@ export default function DynamicDashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <DynamicLayout> {children}</DynamicLayout>;
+  return <DynamicLayout>{children}</DynamicLayout>;
 }

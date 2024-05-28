@@ -15,6 +15,7 @@ export async function getData(query: string, revalidateTime: number) {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
+    console.error(res);
     throw new Error("مشکل سرور");
   }
 

@@ -9,6 +9,7 @@ export default async function DynamicLayout({
   children: React.ReactNode;
 }>) {
   const HeaderData = await getData("/header", 0);
+  const FooterData = await getData("/footer", 0);
 
   return (
     <main>
@@ -22,7 +23,11 @@ export default async function DynamicLayout({
           <>{children}</>
         </div>
       </div>
-      <Footer />
+      <Footer
+        title={FooterData.title}
+        containerClassName={FooterData.containerClassName}
+        titleClassName={FooterData.titleClassName}
+      />
     </main>
   );
 }
