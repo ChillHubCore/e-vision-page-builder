@@ -15,8 +15,8 @@ export default async function DynamicLayout({
     <main>
       <Header
         title={HeaderData.title}
-        containerClassName={HeaderData.containerClassName}
-        titleClassName={HeaderData.titleClassName}
+        backgroundStyle={HeaderData.backgroundStyle}
+        titleStyle={HeaderData.titleStyle}
       />
       <div className="flex justify-between">
         <div className="flex min-h-screen flex-col items-center justify-between py-24 sm:px-16 p-4">
