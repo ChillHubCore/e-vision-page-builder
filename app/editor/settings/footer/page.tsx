@@ -10,8 +10,8 @@ export default async function FooterSettingsPage() {
         <Suspense>
           <FooterGenerator
             title={FooterData.title}
-            containerClassName={FooterData.containerClassName}
-            titleClassName={FooterData.titleClassName}
+            backgroundStyle={FooterData.backgroundStyle}
+            titleStyle={FooterData.titleStyle}
           />
         </Suspense>
       </div>
@@ -21,11 +21,7 @@ export default async function FooterSettingsPage() {
       <div>
         <p>There is no Old Record Of a Footer! - Make a New One!</p>
         <Suspense>
-          <FooterGenerator
-            title={""}
-            containerClassName={""}
-            titleClassName={""}
-          />
+          <FooterGenerator title={""} />
         </Suspense>
       </div>
     );

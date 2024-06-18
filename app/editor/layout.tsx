@@ -11,5 +11,5 @@ export default function EditorDashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <EditorLayout> {children}</EditorLayout>;
+  return <EditorLayout>{children}</EditorLayout>;
 }

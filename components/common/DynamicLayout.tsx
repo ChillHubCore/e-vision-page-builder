@@ -25,8 +25,8 @@ export default async function DynamicLayout({
       </div>
       <Footer
         title={FooterData.title}
-        containerClassName={FooterData.containerClassName}
-        titleClassName={FooterData.titleClassName}
+        backgroundStyle={FooterData.backgroundStyle}
+        titleStyle={FooterData.titleStyle}
       />
     </main>
   );

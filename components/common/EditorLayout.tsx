@@ -1,6 +1,4 @@
 import React from "react";
-import { Header } from "../editor/Header";
-import { Footer } from "../editor/Footer";
 import EditorNavBar from "./EditorNavBar";
 
 export default function EditorLayout({
@@ -10,7 +8,6 @@ export default function EditorLayout({
 }>) {
   return (
     <main>
-      <Header />
       <div className="flex">
         <div className="flex min-h-screen flex-col items-center justify-between py-24 sm:px-16 p-4">
           <EditorNavBar />
@@ -20,7 +17,6 @@ export default function EditorLayout({
           <>{children}</>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

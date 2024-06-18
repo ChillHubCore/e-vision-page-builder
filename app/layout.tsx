@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { StoreProvider, ThemeProvider } from "@/providers";
 import { Toaster } from "@/components/ui/toaster";
+import DynamicLayout from "@/components/common/DynamicLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <DynamicLayout>{children}</DynamicLayout>
             </ThemeProvider>
           </StoreProvider>
         </main>

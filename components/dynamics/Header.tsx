@@ -36,8 +36,6 @@ export default async function Header({
 
   const generatedTitleStyle =
     (titleStyle?.fontSize ?? "") + " " + (titleStyle?.fontWeight ?? "");
-  console.log("bg ---- ", generatedBackgroundStyle);
-  console.log("tt ---- ", generatedTitleStyle);
   return (
     <header className={generatedBackgroundStyle + " py-4 w-full top-0 z-10"}>
       <div className="container mx-auto flex justify-between items-center">
