@@ -1,6 +1,7 @@
 export const EditorNavItems = [
   { label: "Header Settings", href: "/editor/settings/header" },
   { label: "Footer Settings", href: "/editor/settings/footer" },
+  { label: "Homepage Builder", href: "/builder/homepage" },
   { label: "All Pages", href: "/editor/allpages" },
   { label: "Mint New Page", href: "/editor/createpage" },
   // { label: "General Settings", href: "/editor/settings" },
