@@ -105,7 +105,9 @@ export default function Authentication() {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={loading}>
+            Submit
+          </Button>
         </form>
       </Form>
     </div>
