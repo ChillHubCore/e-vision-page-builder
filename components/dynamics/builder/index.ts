@@ -5,7 +5,15 @@ import { lazy } from "react";
 import DialogBoxImage from "@/assests/images/components/dynamics/DialogBox.jpg";
 
 export const DialogBox = lazy(() => import("./DialogBox/DialogBox"));
+export const DialogBoxEditor = lazy(
+  () => import("./DialogBox/DialogBoxEditor")
+);
 
 export const ComponentList = [
-  { name: "DialogBox", previewImage: DialogBoxImage, component: DialogBox },
+  {
+    name: "DialogBox",
+    previewImage: DialogBoxImage,
+    component: DialogBox,
+    editor: DialogBoxEditor,
+  },
 ];

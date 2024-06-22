@@ -2,13 +2,7 @@
 
 import React from "react";
 import { Button } from "../ui/button";
-import {
-  IconArrowDown,
-  IconArrowUp,
-  IconCheck,
-  IconEye,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconCheck, IconEye, IconTrash } from "@tabler/icons-react";
 import {
   Drawer,
   DrawerClose,
@@ -22,11 +16,13 @@ import {
 import { ComponentList } from "../dynamics/builder";
 import Image from "next/image";
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   Menubar,
   MenubarContent,
@@ -129,6 +125,9 @@ export default function PageBuilder({ slug }: { slug?: string }) {
       </DrawerContent>
     </Drawer>
   );
+  const [selectedComponent, setSelectedComponent] = React.useState<
+    number | null
+  >(null);
 
   function RemoveComponentFromList(index: number) {
     setPageComponents((prevComponents) => {
@@ -141,86 +140,98 @@ export default function PageBuilder({ slug }: { slug?: string }) {
     });
   }
 
+  const BuilderNavbar = () => (
+    <div className="flex flex-col gap-3">
+      <hr />
+      <p>
+        You Have Selected{" "}
+        {pageComponents.find((c) => c.position === selectedComponent)?.name ||
+          "No Component"}
+      </p>
+      <hr />
+      {selectedComponent !== null && (
+        <div className="flex flex-col gap-3">
+          <Button>
+            <ComponentPickerDrawer
+              triggerContent="Add a Component Above"
+              position={selectedComponent ? selectedComponent : 0}
+            />
+          </Button>
+          <Button>
+            <ComponentPickerDrawer
+              triggerContent="Add a Component Below"
+              position={selectedComponent ? selectedComponent + 1 : 0}
+            />
+          </Button>
+          <Drawer>
+            <Button>
+              <DrawerTrigger>Edit Component Content</DrawerTrigger>
+            </Button>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Edit Component Content</DrawerTitle>
+                <DrawerDescription>
+                  Use The Tools and Fields Below To Edit The Component Content.
+                </DrawerDescription>
+                Edit
+              </DrawerHeader>
+              <DrawerFooter>
+                <DrawerClose>
+                  <Button variant="outline">Close</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="flex flex-col w-full">
-      <div className="w-fit my-5">
-        <Menubar>
-          <MenubarMenu>
-            <MenubarTrigger>Page Actions</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                Save{" "}
-                <MenubarShortcut>
-                  <IconCheck />
-                </MenubarShortcut>
-              </MenubarItem>
-              <MenubarItem>
-                Preview{" "}
-                <MenubarShortcut>
-                  <IconEye />
-                </MenubarShortcut>
-              </MenubarItem>
-              <MenubarItem>
-                Delete{" "}
-                <MenubarShortcut>
-                  <IconTrash />
-                </MenubarShortcut>
-              </MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md">
+        <Sheet>
+          <SheetTrigger className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+            Builder Tools
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Page Builder Tools</SheetTitle>
+              <BuilderNavbar />
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+        <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+          <ComponentPickerDrawer
+            triggerContent="Add a New Component"
+            position={
+              pageComponents.length === 0 ? 0 : pageComponents.length + 1
+            }
+          />
+        </div>
+        <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+          Save Page
+        </div>
+        <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+          Preview Page
+        </div>
+        <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+          Delete Page
+        </div>
       </div>
-      <div className="flex flex-row">
-        <ComponentPickerDrawer triggerContent="Add Up Here" position={0} />
-        <IconArrowUp />
-      </div>
-      <hr className="my-2" />
-      <>
-        {pageComponents.map((c) => {
-          const Component = ComponentList.find((cl) => cl.name === c.name);
-          if (!Component) return null;
-          return (
-            <ContextMenu key={c.name}>
-              <ContextMenuTrigger>
-                <Component.component {...c.props} />
-              </ContextMenuTrigger>
-              <ContextMenuContent>
-                <ContextMenuItem>
-                  <ComponentPickerDrawer
-                    triggerContent="Add a Component Above"
-                    position={c.position}
-                  />
-                </ContextMenuItem>
-                <ContextMenuItem>
-                  <ComponentPickerDrawer
-                    triggerContent="Add a Component Below"
-                    position={c.position + 1}
-                  />
-                </ContextMenuItem>
-                <ContextMenuItem
-                  onClick={() => {
-                    RemoveComponentFromList(c.position);
-                  }}
-                >
-                  Remove Component
-                </ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
-          );
-        })}
-      </>
-      <hr className="my-2" />
-      <div className="flex flex-row">
-        <ComponentPickerDrawer
-          triggerContent="Add Down Here"
-          position={
-            pageComponents.length === 0
-              ? 0
-              : pageComponents[pageComponents.length - 1].position + 1
-          }
-        />
-        <IconArrowDown />
-      </div>
+      {pageComponents.map((c) => {
+        const Component = ComponentList.find((cl) => cl.name === c.name);
+        if (!Component) return null;
+        return (
+          <div
+            key={c.position}
+            className="cursor-pointer"
+            onClick={() => setSelectedComponent(c.position)}
+          >
+            <Component.component {...c.props} />
+          </div>
+        );
+      })}
     </div>
   );
 }

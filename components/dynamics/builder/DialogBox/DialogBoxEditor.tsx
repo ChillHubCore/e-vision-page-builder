@@ -24,7 +24,7 @@ const formSchema = z.object({
   content: z.string(),
 });
 
-export default function DialogBoxInput() {
+export default function DialogBoxEditor() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userInfo = useSelector(selectUserInfo);
