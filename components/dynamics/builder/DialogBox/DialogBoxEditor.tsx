@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Form,
   FormControl,
@@ -12,55 +12,64 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserInfo } from "@/lib/redux/User/UserSlice";
-import { getError } from "@/lib/getError";
-import { toast } from "@/components/ui/use-toast";
-import { redirect } from "next/navigation";
-import axios from "@/lib/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   content: z.string(),
 });
 
-export default function DialogBoxEditor() {
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  const userInfo = useSelector(selectUserInfo);
+export default function DialogBoxEditor({
+  onSave,
+  previousContent,
+}: {
+  onSave?: (values: { content: string }) => void;
+  previousContent?: string;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: "",
+      content: previousContent || "",
     },
   });
-  // 2. Define a submit handler.
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
 
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await axios.post("/user/editor/signin", {
-  //       content: values.content,
-  //     });
-  //     setLoading(false);
-  //   } catch (err: unknown) {
-  //     if (err instanceof Error) {
-  //       toast({
-  //         title: "Error",
-  //         description: getError(err),
-  //         variant: "destructive",
-  //       });
-  //       setLoading(false);
-  //     }
-  //   }
-  // }
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    if (onSave) onSave(values);
+  }
 
-  useEffect(() => {
-    if (!userInfo) redirect("/");
-  });
-
-  if (!userInfo === undefined) return;
-  return <div>DialogBoxInput</div>;
+  return (
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-2/3 space-y-6"
+        >
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dialog Box Content</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Type your content here..."
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  This is the content that will be displayed in the dialog box.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Save</Button>
+        </form>
+      </Form>
+    </div>
+  );
 }

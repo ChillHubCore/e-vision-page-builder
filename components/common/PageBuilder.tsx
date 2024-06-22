@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Button } from "../ui/button";
-import { IconCheck, IconEye, IconTrash } from "@tabler/icons-react";
 import {
   Drawer,
   DrawerClose,
@@ -18,20 +17,10 @@ import Image from "next/image";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  // MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 
 export interface PageContext {
   Components:
@@ -46,23 +35,41 @@ export interface PageContext {
 export default function PageBuilder({ slug }: { slug?: string }) {
   const [pageComponents, setPageComponents] = React.useState<
     PageContext["Components"]
-  >([
+  >([]);
+
+  //define save functions for each component
+
+  const ComponentsSaveFunctions = [
     {
-      position: 0,
       name: "DialogBox",
-      props: { editFlag: true },
+      saveFunction: function SaveDialogBox(values: { content: string }) {
+        setPageComponents((prevComponents) => {
+          const newComponents = [...prevComponents];
+          const dialogBoxIndex = newComponents.findIndex(
+            (c) => c.name === "DialogBox" && c.position === selectedComponent
+          );
+          if (dialogBoxIndex !== -1) {
+            newComponents[dialogBoxIndex].props.content = values.content;
+          }
+          return newComponents;
+        });
+      },
     },
-  ]);
+  ];
+  //define save functions for each component
+
   const ComponentPickerDrawer = ({
     triggerContent,
     position,
+    className,
   }: {
     triggerContent: string;
     position: number;
+    className?: string;
   }) => (
     <Drawer>
       <DrawerTrigger>
-        <div>{triggerContent}</div>
+        <div className={className || ""}>{triggerContent}</div>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -80,8 +87,17 @@ export default function PageBuilder({ slug }: { slug?: string }) {
                       setPageComponents([
                         {
                           name: component.name,
-                          props: { editFlag: true },
+                          props: {},
                           position: 0,
+                        },
+                      ]);
+                    } else if (position === pageComponents.length) {
+                      setPageComponents((prevComponents) => [
+                        ...prevComponents,
+                        {
+                          name: component.name,
+                          props: {},
+                          position: position,
                         },
                       ]);
                     } else {
@@ -89,7 +105,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
                         const newComponents = [...prevComponents];
                         newComponents.splice(position, 0, {
                           name: component.name,
-                          props: { editFlag: true },
+                          props: {},
                           position: position,
                         });
                         for (
@@ -97,7 +113,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
                           i < newComponents.length;
                           i++
                         ) {
-                          newComponents[i].position += 1;
+                          newComponents[i].position = i;
                         }
                         return newComponents;
                       });
@@ -118,9 +134,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           </div>
         </DrawerHeader>
         <DrawerFooter>
-          <DrawerClose>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
+          <DrawerClose>Close</DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -136,9 +150,29 @@ export default function PageBuilder({ slug }: { slug?: string }) {
       for (let i = index; i < newComponents.length; i++) {
         newComponents[i].position -= 1;
       }
+      setSelectedComponent(null);
       return newComponents;
     });
   }
+
+  const RenderComponentEditor = () => {
+    const SelectedComponent = pageComponents.find(
+      (c) => c.position === selectedComponent
+    );
+    const Component = ComponentList.find(
+      (c) => c.name === SelectedComponent?.name
+    );
+    if (!Component) return null;
+    return (
+      <Component.editor
+        previousContent={SelectedComponent?.props.content}
+        onSave={
+          ComponentsSaveFunctions.find((c) => c.name === Component.name)
+            ?.saveFunction
+        }
+      />
+    );
+  };
 
   const BuilderNavbar = () => (
     <div className="flex flex-col gap-3">
@@ -151,41 +185,28 @@ export default function PageBuilder({ slug }: { slug?: string }) {
       <hr />
       {selectedComponent !== null && (
         <div className="flex flex-col gap-3">
-          <Button>
-            <ComponentPickerDrawer
-              triggerContent="Add a Component Above"
-              position={selectedComponent ? selectedComponent : 0}
-            />
+          <ComponentPickerDrawer
+            triggerContent="Add a Component Above"
+            position={selectedComponent}
+            className="bg-slate-500 text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000"
+          />
+          <ComponentPickerDrawer
+            triggerContent="Add a Component Below"
+            position={selectedComponent + 1}
+            className="bg-slate-500 text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000"
+          />
+
+          <RenderComponentEditor />
+
+          <Button onClick={() => RemoveComponentFromList(selectedComponent)}>
+            Remove This Component
           </Button>
-          <Button>
-            <ComponentPickerDrawer
-              triggerContent="Add a Component Below"
-              position={selectedComponent ? selectedComponent + 1 : 0}
-            />
-          </Button>
-          <Drawer>
-            <Button>
-              <DrawerTrigger>Edit Component Content</DrawerTrigger>
-            </Button>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>Edit Component Content</DrawerTitle>
-                <DrawerDescription>
-                  Use The Tools and Fields Below To Edit The Component Content.
-                </DrawerDescription>
-                Edit
-              </DrawerHeader>
-              <DrawerFooter>
-                <DrawerClose>
-                  <Button variant="outline">Close</Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
         </div>
       )}
     </div>
   );
+
+  // console.log(pageComponents);
 
   return (
     <div className="flex flex-col gap-2">
@@ -204,9 +225,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
         <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
           <ComponentPickerDrawer
             triggerContent="Add a New Component"
-            position={
-              pageComponents.length === 0 ? 0 : pageComponents.length + 1
-            }
+            position={pageComponents.length}
           />
         </div>
         <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
@@ -219,19 +238,21 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           Delete Page
         </div>
       </div>
-      {pageComponents.map((c) => {
-        const Component = ComponentList.find((cl) => cl.name === c.name);
-        if (!Component) return null;
-        return (
-          <div
-            key={c.position}
-            className="cursor-pointer"
-            onClick={() => setSelectedComponent(c.position)}
-          >
-            <Component.component {...c.props} />
-          </div>
-        );
-      })}
+      <div>
+        {pageComponents.map((c) => {
+          const Component = ComponentList.find((cl) => cl.name === c.name);
+          if (!Component) return null;
+          return (
+            <div
+              key={c.position}
+              className="cursor-pointer"
+              onClick={() => setSelectedComponent(c.position)}
+            >
+              <Component.component {...c.props} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
