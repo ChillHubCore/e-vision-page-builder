@@ -1,5 +1,20 @@
 import type { Config } from "tailwindcss";
 
+const twvariants = [
+  "xl",
+  "lg",
+  "md",
+  "sm",
+  "xs",
+  "hover",
+  "focus",
+  "xl:hover",
+  "lg:hover",
+  "md:hover",
+  "sm:hover",
+  "xs:hover",
+];
+
 const config = {
   darkMode: ["class"],
   content: [
@@ -8,20 +23,24 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  safelist: [
-    {
-      pattern: /bg-(.*)-(.*)/,
-      variants: ["lg", "hover", "focus", "lg:hover"],
-    },
-    {
-      pattern: /text-(.*)-(.*)/,
-      variants: ["lg", "hover", "focus", "lg:hover"],
-    },
-    {
-      pattern: /font-(.*)/,
-      variants: ["lg", "hover", "focus", "lg:hover"],
-    },
-  ],
+  // safelist: [
+  //   {
+  //     pattern: /bg-(.*)-(.*)/,
+  //     variants: twvariants,
+  //   },
+  //   {
+  //     pattern: /text-(.*)-(.*)/,
+  //     variants: twvariants,
+  //   },
+  //   {
+  //     pattern: /font-(.*)/,
+  //     variants: twvariants,
+  //   },
+  //   {
+  //     pattern: /flex-(.*)/,
+  //     variants: twvariants,
+  //   },
+  // ],
   prefix: "",
   theme: {
     container: {

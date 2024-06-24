@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "../ui/button";
 import {
   Drawer,
@@ -21,6 +21,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import tempImg from "@/assests/images/components/dynamics/HeroBanner.gif";
 
 export interface PageContext {
   Components:
@@ -35,7 +36,23 @@ export interface PageContext {
 export default function PageBuilder({ slug }: { slug?: string }) {
   const [pageComponents, setPageComponents] = React.useState<
     PageContext["Components"]
-  >([]);
+  >([
+    {
+      name: "HeroBanner",
+      props: {
+        content: {
+          title: "Hero Component",
+          items: [
+            { image: tempImg, description: "Lalalala1" },
+            { image: tempImg, description: "Lalalala2" },
+            { image: tempImg, description: "Lalalala3" },
+            { image: tempImg, description: "Lalalala4" },
+          ],
+        },
+      },
+      position: 0,
+    },
+  ]);
 
   //define save functions for each component
 
@@ -79,9 +96,63 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           </DrawerDescription>
           <div className="my-10 grid grid-cols-8 gap-5">
             {ComponentList.map((component) => (
-              <div key={component.name}>
+              <div
+                key={component.name}
+                onClick={() => {
+                  if (pageComponents.length === 0) {
+                    setPageComponents([
+                      {
+                        name: component.name,
+                        props: {},
+                        position: 0,
+                      },
+                    ]);
+                  } else if (position === pageComponents.length) {
+                    setPageComponents((prevComponents) => [
+                      ...prevComponents,
+                      {
+                        name: component.name,
+                        props: {},
+                        position: position,
+                      },
+                    ]);
+                  } else {
+                    setPageComponents((prevComponents) => {
+                      const newComponents = [...prevComponents];
+                      newComponents.splice(position, 0, {
+                        name: component.name,
+                        props: {},
+                        position: position,
+                      });
+                      for (
+                        let i = position + 1;
+                        i < newComponents.length;
+                        i++
+                      ) {
+                        newComponents[i].position = i;
+                      }
+                      return newComponents;
+                    });
+                  }
+                }}
+              >
                 <div
                   className="cursor-pointer hover:scale-105 hover:opacity-100 transition duration-500 opacity-80"
+                  style={{
+                    width: 120,
+                    height: 120,
+                  }}
+                >
+                  <Image
+                    className="rounded-md"
+                    width={120}
+                    height={120}
+                    src={component.previewImage}
+                    alt={component.name}
+                  />
+                </div>
+                <p
+                  className="my-5 cursor-pointer"
                   onClick={() => {
                     if (pageComponents.length === 0) {
                       setPageComponents([
@@ -120,15 +191,8 @@ export default function PageBuilder({ slug }: { slug?: string }) {
                     }
                   }}
                 >
-                  <Image
-                    className="rounded-md"
-                    width={120}
-                    height={120}
-                    src={component.previewImage}
-                    alt={component.name}
-                  />
-                  <p className="my-5">{component.name}</p>
-                </div>
+                  {component.name}
+                </p>
               </div>
             ))}
           </div>
@@ -209,7 +273,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md">
+      <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md w-80 sm:w-full overflow-x-scroll">
         <Sheet>
           <SheetTrigger className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
             Builder Tools
@@ -247,7 +311,9 @@ export default function PageBuilder({ slug }: { slug?: string }) {
               className="cursor-pointer"
               onClick={() => setSelectedComponent(c.position)}
             >
-              <Component.component {...c.props} />
+              <Suspense>
+                <Component.component {...c.props} />
+              </Suspense>
             </div>
           );
         })}
