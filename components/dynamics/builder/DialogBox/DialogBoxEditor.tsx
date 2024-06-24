@@ -13,8 +13,17 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { EVRichTextEditor } from "@/components/common";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const formSchema = z.object({
   content: z.string(),
@@ -30,7 +39,7 @@ export default function DialogBoxEditor({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      content: previousContent || "",
+      content: previousContent || "<p>Type a Content Here!</p>",
     },
   });
 
@@ -54,11 +63,24 @@ export default function DialogBoxEditor({
               <FormItem>
                 <FormLabel>Dialog Box Content</FormLabel>
                 <FormControl>
-                  <Textarea
+                  {/* <Textarea
                     placeholder="Type your content here..."
                     className="resize-none"
                     {...field}
-                  />
+                  /> */}
+                  <Dialog>
+                    <DialogTrigger className="bg-slate-500 text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
+                      Open Text Editor
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <EVRichTextEditor
+                          className="min-h-60 min-w-80"
+                          {...field}
+                        />
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
                 </FormControl>
                 <FormDescription>
                   This is the content that will be displayed in the dialog box.

@@ -185,6 +185,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
       <hr />
       {selectedComponent !== null && (
         <div className="flex flex-col gap-3">
+          Selected Position is {selectedComponent}
           <ComponentPickerDrawer
             triggerContent="Add a Component Above"
             position={selectedComponent}
@@ -195,9 +196,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
             position={selectedComponent + 1}
             className="bg-slate-500 text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000"
           />
-
           <RenderComponentEditor />
-
           <Button onClick={() => RemoveComponentFromList(selectedComponent)}>
             Remove This Component
           </Button>

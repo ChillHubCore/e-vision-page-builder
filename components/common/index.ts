@@ -8,3 +8,6 @@ export const PageFilters = lazy(() => import("./PageFilters"));
 export const PageGenerator = lazy(() => import("./PageGenerator"));
 export const PageBuilder = lazy(() => import("./PageBuilder"));
 export const PageConstructor = lazy(() => import("./PageConstructor"));
+
+import { EVRichTextEditor } from "./EVRichTextEditor";
+export { EVRichTextEditor };
