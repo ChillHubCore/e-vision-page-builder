@@ -47,7 +47,8 @@ export default function PageBuilder({ slug }: { slug?: string }) {
             {
               header: "jajaja1",
               image: tempImg,
-              description: "Lalalala1",
+              description:
+                "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum enim qui voluptatibus accusantium labore quibusdam. Ea pariatur tenetur, magnam consequuntur similique fugit molestias blanditiis at nostrum, quia corrupti ex, officia molestiae laboriosam facilis deserunt commodi provident dolorum rem. Doloremque maiores explicabo unde veniam. Pariatur quo, est dicta commodi accusantium nostrum quod fugiat sunt, deleniti quisquam facere optio libero natus laudantium tempora blanditiis aut. Velit accusantium pariatur, sunt aut illum, quibusdam ut itaque praesentium minus perspiciatis tempora. Dicta molestias iste cupiditate earum voluptatem ea illum minima nostrum aliquid laborum molestiae ipsam facilis, voluptatibus expedita sed sunt quo aspernatur. Minima, repellat reprehenderit.",
               link: "/",
             },
             {
@@ -69,6 +70,9 @@ export default function PageBuilder({ slug }: { slug?: string }) {
               link: "/",
             },
           ],
+        },
+        styles: {
+          // orientation: "horizontal",
         },
       },
       position: 0,
