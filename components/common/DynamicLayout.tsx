@@ -18,11 +18,11 @@ export default async function DynamicLayout({
         backgroundStyle={HeaderData.backgroundStyle}
         titleStyle={HeaderData.titleStyle}
       />
-      <div className="flex justify-between">
-        <div className="flex min-h-screen flex-col items-center justify-between py-24 sm:px-16 p-4">
-          <>{children}</>
-        </div>
+
+      <div className="flex min-h-screen flex-col py-24 sm:px-16 p-4 w-full">
+        <>{children}</>
       </div>
+
       <Footer
         title={FooterData.title}
         backgroundStyle={FooterData.backgroundStyle}

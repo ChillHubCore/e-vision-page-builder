@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import tempImg from "@/assests/images/components/dynamics/HeroBanner.gif";
+import tempImg2 from "@/assests/images/components/dynamics/BannerSize.png";
 
 export interface PageContext {
   Components:
@@ -43,10 +44,30 @@ export default function PageBuilder({ slug }: { slug?: string }) {
         content: {
           title: "Hero Component",
           items: [
-            { image: tempImg, description: "Lalalala1" },
-            { image: tempImg, description: "Lalalala2" },
-            { image: tempImg, description: "Lalalala3" },
-            { image: tempImg, description: "Lalalala4" },
+            {
+              header: "jajaja1",
+              image: tempImg,
+              description: "Lalalala1",
+              link: "/",
+            },
+            {
+              header: "jajaja2",
+              image: tempImg2,
+              description: "Lalalala2",
+              link: "/",
+            },
+            {
+              header: "jajaja3",
+              image: tempImg,
+              description: "Lalalala3",
+              link: "/",
+            },
+            {
+              header: "jajaja4",
+              image: tempImg2,
+              description: "Lalalala4",
+              link: "/",
+            },
           ],
         },
       },
@@ -272,8 +293,8 @@ export default function PageBuilder({ slug }: { slug?: string }) {
   // console.log(pageComponents);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md w-80 sm:w-full overflow-x-scroll">
+    <div className="flex flex-col gap-2 w-full">
+      {/* <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md w-80 sm:w-full overflow-x-scroll">
         <Sheet>
           <SheetTrigger className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
             Builder Tools
@@ -300,7 +321,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
         <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
           Delete Page
         </div>
-      </div>
+      </div> */}
       <div>
         {pageComponents.map((c) => {
           const Component = ComponentList.find((cl) => cl.name === c.name);

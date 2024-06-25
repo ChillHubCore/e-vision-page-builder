@@ -52,19 +52,23 @@ export default function HeroBanner({
             className={cn(
               `flex flex-${
                 styles?.orientation === "horizontal" ? "row" : "col"
-              } items-center justify-between dark:bg-slate-800 bg-slate-200 p-5 rounded-md w-24 sm:w-full`,
+              } items-center justify-${
+                styles?.orientation === "horizontal" ? "between" : "center"
+              } dark:bg-slate-800 bg-slate-200`,
               styles?.itemClassName
             )}
             key={index}
           >
-            <Image
-              src={item.image}
-              alt={item.description}
-              width={styles?.imgWidth || 400}
-              height={styles?.imgHeight || 200}
-              style={{ objectFit: "contain" }}
-              className={cn("rounded-md", styles?.imgClassName)}
-            />
+            <div className="w-full flex flex-row justify-center">
+              <Image
+                src={item.image}
+                alt={item.description}
+                width={styles?.imgWidth || 1200}
+                height={styles?.imgHeight || 300}
+                // style={{ objectFit: "contain" }}
+                className={cn("rounded-md", styles?.imgClassName)}
+              />
+            </div>
 
             <p
               className={cn(
@@ -78,7 +82,7 @@ export default function HeroBanner({
         )) || "Add items in the Builder"}
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext className="hidden sm:block" />
+      <CarouselNext />
     </Carousel>
   );
 }
