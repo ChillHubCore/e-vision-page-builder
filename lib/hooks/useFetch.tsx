@@ -8,6 +8,11 @@ import { selectUserInfo } from "@/lib/redux/User/UserSlice";
 import { getError } from "@/lib/getError";
 import { toast } from "@/components/ui/use-toast";
 
+/**
+ * Custom hook for making HTTP GET requests and handling the response.
+ * @param requestQuery - The query string for the GET request.
+ * @returns An object containing the fetched data, loading state, error state, HTTP status code, and a function to refetch the data.
+ */
 export const useFetch = (requestQuery: string) => {
   const [data, setData] = useState<[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +20,9 @@ export const useFetch = (requestQuery: string) => {
   const [status, setStatus] = useState<number>();
   const userInfo = useSelector(selectUserInfo);
 
+  /**
+   * Fetches the data from the specified URL using an HTTP GET request.
+   */
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -40,6 +48,9 @@ export const useFetch = (requestQuery: string) => {
     fetchData();
   }, []);
 
+  /**
+   * Refetches the data by calling the fetchData function.
+   */
   const refetch = () => {
     setIsLoading(true);
     fetchData();

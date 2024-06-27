@@ -10,8 +10,10 @@
 
 - Component Need to Be in a Way That Follow Server Side Rendering in Next JS unless it absoultly can't be done.
 
-- All Components Editors Need to Have Some Common Props Which are - > onSave , previousContent
+- All Components Editors Need to Have Some Common Props Which are - > onSave , previousContent , previousStyles
 
 - Components Need to Have Some Common Props Which are - > content => {
   Content can be Object or Simple Strings or Any Type Of Data Which is Needed to Render The Component.
-  } ,
+  } styles => {
+  Styles can be Object or Simple Strings or Any Type Of Data Which is Needed to Render The Component.
+  },

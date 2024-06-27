@@ -11,11 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function HeroBanner({
-  content,
-  styles,
-}: {
-  content?: {
+export interface HeroBannerProps {
+  content: {
     title: string;
     items: {
       header: string;
@@ -24,7 +21,7 @@ export default function HeroBanner({
       link: string;
     }[];
   };
-  styles?: {
+  styles: {
     containerClassName: string;
     titleClassName: string;
     itemClassName: string;
@@ -33,6 +30,14 @@ export default function HeroBanner({
     headerClassName: string;
     orientation: "horizontal" | "vertical";
   };
+}
+
+export default function HeroBanner({
+  content,
+  styles,
+}: {
+  content: HeroBannerProps["content"];
+  styles: HeroBannerProps["styles"];
 }) {
   return (
     <Carousel

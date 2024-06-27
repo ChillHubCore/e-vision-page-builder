@@ -19,9 +19,7 @@ import { EVRichTextEditor } from "@/components/common";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -32,9 +30,11 @@ const formSchema = z.object({
 export default function DialogBoxEditor({
   onSave,
   previousContent,
+  previusStyles,
 }: {
-  onSave?: (values: { content: string }) => void;
+  onSave?: any;
   previousContent?: string;
+  previusStyles?: string;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,10 +52,7 @@ export default function DialogBoxEditor({
   return (
     <div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="content"

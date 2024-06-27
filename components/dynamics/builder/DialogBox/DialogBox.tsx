@@ -1,6 +1,12 @@
 import React from "react";
 
-export default function DialogBox({ content }: { content?: string }) {
+export default function DialogBox({
+  content,
+  styles,
+}: {
+  content?: string;
+  styles?: string;
+}) {
   return (
     <div
       dangerouslySetInnerHTML={{

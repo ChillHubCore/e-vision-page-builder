@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/sheet";
 import tempImg from "@/assests/images/components/dynamics/HeroBanner.gif";
 import tempImg2 from "@/assests/images/components/dynamics/BannerSize.png";
+import { HeroBannerProps } from "../dynamics/builder/HeroBanner/HeroBanner";
 
 export interface PageContext {
   Components:
@@ -72,7 +73,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           ],
         },
         styles: {
-          // orientation: "horizontal",
+          orientation: "vertical",
         },
       },
       position: 0,
@@ -92,6 +93,22 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           );
           if (dialogBoxIndex !== -1) {
             newComponents[dialogBoxIndex].props.content = values.content;
+          }
+          return newComponents;
+        });
+      },
+    },
+    {
+      name: "HeroBanner",
+      saveFunction: function SaveHeroBanner(values: HeroBannerProps) {
+        setPageComponents((prevComponents) => {
+          const newComponents = [...prevComponents];
+          const heroBannerIndex = newComponents.findIndex(
+            (c) => c.name === "HeroBanner" && c.position === selectedComponent
+          );
+          if (heroBannerIndex !== -1) {
+            newComponents[heroBannerIndex].props.content = values.content;
+            newComponents[heroBannerIndex].props.styles = values.styles;
           }
           return newComponents;
         });
@@ -255,6 +272,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
     return (
       <Component.editor
         previousContent={SelectedComponent?.props.content}
+        previusStyles={SelectedComponent?.props.styles}
         onSave={
           ComponentsSaveFunctions.find((c) => c.name === Component.name)
             ?.saveFunction
@@ -298,7 +316,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      {/* <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md w-80 sm:w-full overflow-x-scroll">
+      <div className="flex flex-row gap-3 dark:bg-slate-900 p-2 rounded-md w-80 sm:w-full overflow-x-scroll">
         <Sheet>
           <SheetTrigger className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
             Builder Tools
@@ -325,7 +343,7 @@ export default function PageBuilder({ slug }: { slug?: string }) {
         <div className="bg-slate-500 w-fit text-white p-3 rounded-md hover:bg-slate-600 transition duration-1000">
           Delete Page
         </div>
-      </div> */}
+      </div>
       <div>
         {pageComponents.map((c) => {
           const Component = ComponentList.find((cl) => cl.name === c.name);
