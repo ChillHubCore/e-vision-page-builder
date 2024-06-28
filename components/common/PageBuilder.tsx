@@ -40,41 +40,13 @@ export default function PageBuilder({ slug }: { slug?: string }) {
     PageContext["Components"]
   >([
     {
-      name: "HeroBanner",
+      name: "TitleBox",
       props: {
         content: {
-          title: "Hero Component",
-          items: [
-            {
-              header: "jajaja1",
-              image: tempImg,
-              description:
-                "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum enim qui voluptatibus accusantium labore quibusdam. Ea pariatur tenetur, magnam consequuntur similique fugit molestias blanditiis at nostrum, quia corrupti ex, officia molestiae laboriosam facilis deserunt commodi provident dolorum rem. Doloremque maiores explicabo unde veniam. Pariatur quo, est dicta commodi accusantium nostrum quod fugiat sunt, deleniti quisquam facere optio libero natus laudantium tempora blanditiis aut. Velit accusantium pariatur, sunt aut illum, quibusdam ut itaque praesentium minus perspiciatis tempora. Dicta molestias iste cupiditate earum voluptatem ea illum minima nostrum aliquid laborum molestiae ipsam facilis, voluptatibus expedita sed sunt quo aspernatur. Minima, repellat reprehenderit.",
-              link: "/",
-            },
-            {
-              header: "jajaja2",
-              image: tempImg2,
-              description: "Lalalala2",
-              link: "/",
-            },
-            {
-              header: "jajaja3",
-              image: tempImg,
-              description: "Lalalala3",
-              link: "/",
-            },
-            {
-              header: "jajaja4",
-              image: tempImg2,
-              description: "Lalalala4",
-              link: "/",
-            },
-          ],
+          text: "This is a Title Box",
+          order: "1",
         },
-        styles: {
-          orientation: "vertical",
-        },
+        styles: "text-center",
       },
       position: 0,
     },
@@ -109,6 +81,25 @@ export default function PageBuilder({ slug }: { slug?: string }) {
           if (heroBannerIndex !== -1) {
             newComponents[heroBannerIndex].props.content = values.content;
             newComponents[heroBannerIndex].props.styles = values.styles;
+          }
+          return newComponents;
+        });
+      },
+    },
+    {
+      name: "TitleBox",
+      saveFunction: function SaveTitleBox(values: {
+        content: { text: string; order: string };
+        styles: string;
+      }) {
+        setPageComponents((prevComponents) => {
+          const newComponents = [...prevComponents];
+          const titleBoxIndex = newComponents.findIndex(
+            (c) => c.name === "TitleBox" && c.position === selectedComponent
+          );
+          if (titleBoxIndex !== -1) {
+            newComponents[titleBoxIndex].props.content = values.content;
+            newComponents[titleBoxIndex].props.styles = values.styles;
           }
           return newComponents;
         });
@@ -270,14 +261,16 @@ export default function PageBuilder({ slug }: { slug?: string }) {
     );
     if (!Component) return null;
     return (
-      <Component.editor
-        previousContent={SelectedComponent?.props.content}
-        previusStyles={SelectedComponent?.props.styles}
-        onSave={
-          ComponentsSaveFunctions.find((c) => c.name === Component.name)
-            ?.saveFunction
-        }
-      />
+      <Suspense>
+        <Component.editor
+          previousContent={SelectedComponent?.props.content}
+          previousStyles={SelectedComponent?.props.styles}
+          onSave={
+            ComponentsSaveFunctions.find((c) => c.name === Component.name)
+              ?.saveFunction
+          }
+        />
+      </Suspense>
     );
   };
 

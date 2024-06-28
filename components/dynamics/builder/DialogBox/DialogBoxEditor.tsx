@@ -30,11 +30,11 @@ const formSchema = z.object({
 export default function DialogBoxEditor({
   onSave,
   previousContent,
-  previusStyles,
+  previousStyles,
 }: {
   onSave?: any;
   previousContent?: string;
-  previusStyles?: string;
+  previousStyles?: string;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

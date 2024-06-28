@@ -101,11 +101,7 @@ export default function HeroBannerEditor({
   }, [refresh]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Saved!",
-      color: "#10b981",
-      description: "Your changes have been saved.",
-    });
+    console.log("submit called");
     if (onSave) {
       onSave(values);
     }
@@ -116,7 +112,7 @@ export default function HeroBannerEditor({
         ...form.getValues("content.items"),
         item,
       ]);
-      form.register("content.items");
+      form.trigger("content.items");
       setRefresh(true);
     } else {
       toast({
@@ -135,6 +131,8 @@ export default function HeroBannerEditor({
         return i;
       }),
     ]);
+    form.trigger("content.items");
+    form.register("content.items");
   }
   const RenderAddItemDialog = (
     <Dialog>
@@ -313,7 +311,9 @@ export default function HeroBannerEditor({
                   "content.items",
                   form.getValues("content.items").filter((i) => i !== item)
                 );
-                form.register("content.items");
+                form.register("content.items", {
+                  value: form.getValues("content.items"),
+                });
                 setRefresh(true);
               }}
             >
@@ -328,7 +328,7 @@ export default function HeroBannerEditor({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 flex flex-col gap-3"
+          className="space-y-6 flex flex-col gap-3 overflow-y-scroll h-96"
         >
           <FormField
             control={form.control}
@@ -348,12 +348,133 @@ export default function HeroBannerEditor({
           />
           {RenderAddItemDialog}
           <div className="grid grid-cols-5 gap-5">{RenderItems}</div>
+          <div>
+            <p>Component Styles</p>
+            <FormField
+              control={form.control}
+              name="styles.containerClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Container Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Container Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the container of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.titleClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Title Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the title of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.itemClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Item Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Item Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the item of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.imgClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Image Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the image of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.descriptionClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Description Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the description of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.headerClassName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Header Class Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Header Class Name" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    The class name for the header of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="styles.orientation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Orientation</FormLabel>
+                  <FormControl>
+                    <select
+                      {...field}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    >
+                      <option value="horizontal">Horizontal</option>
+                      <option value="vertical">Vertical</option>
+                    </select>
+                  </FormControl>
+                  <FormDescription>
+                    The orientation of the component.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <Button
             onClick={() => {
-              console.log(form);
+              onSubmit(form.getValues());
             }}
             className="w-fit"
-            type="submit"
+            // type="submit"
           >
             Save
           </Button>

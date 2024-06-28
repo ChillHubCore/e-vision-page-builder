@@ -12,6 +12,8 @@ export const HeroBanner = lazy(() => import("./HeroBanner/HeroBanner"));
 export const HeroBannerEditor = lazy(
   () => import("./HeroBanner/HeroBannerEditor")
 );
+export const TitleBox = lazy(() => import("./TitleBox/TitleBox"));
+export const TitleBoxEditor = lazy(() => import("./TitleBox/TitleBoxEditor"));
 
 export const ComponentList = [
   {
@@ -25,5 +27,11 @@ export const ComponentList = [
     previewImage: TempImage,
     component: HeroBanner,
     editor: HeroBannerEditor,
+  },
+  {
+    name: "TitleBox",
+    previewImage: TempImage,
+    component: TitleBox,
+    editor: TitleBoxEditor,
   },
 ];
